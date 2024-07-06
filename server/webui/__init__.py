@@ -15,10 +15,10 @@ from flask import flash
 from flask import send_from_directory
 from flask import current_app
 
-from models import db
-from models import Agent
-from models import Command
-from models import User
+from ..models import db
+from ..models import Agent
+from ..models import Command
+from ..models import User
 
 
 def hash_and_salt(password):
