@@ -8,12 +8,14 @@ import datetime
 import os
 import shutil
 import tempfile
+import sys
+
+# Add server directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from flask import Flask, current_app
 from flask.cli import AppGroup, with_appcontext
-from models import db
-from models import Agent
-from models import Command
+from models import db, Agent, Command
 from webui import webui
 from api import api
 from config import config

