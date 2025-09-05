@@ -1,53 +1,59 @@
-import random
-import string
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-from flask_sqlalchemy import SQLAlchemy
-
-
+# Initialize SQLAlchemy
 db = SQLAlchemy()
-
 
 class Agent(db.Model):
     __tablename__ = 'agents'
-    id = db.Column(db.String(100), primary_key=True)
-    display_name = db.Column(db.String(100))
-    last_online = db.Column(db.DateTime())
-    operating_system = db.Column(db.String(100))
-    remote_ip = db.Column(db.String(100))
-    geolocation = db.Column(db.String(100))
-    output = db.Column(db.Text(), default="")
+    
+    id = db.Column(db.Integer, primary_key=True)
+    agent_id = db.Column(db.String(100), unique=True, nullable=False)
     hostname = db.Column(db.String(100))
     username = db.Column(db.String(100))
-
-    def __init__(self, uid):
-        self.id = uid
-        self.display_name = self.id
-
+    operating_system = db.Column(db.String(100))
+    last_online = db.Column(db.DateTime, default=datetime.utcnow)
+    remote_ip = db.Column(db.String(45))
+    geolocation = db.Column(db.String(100))
+    output = db.Column(db.Text, default='')
+    
+    # Relationship with commands
+    commands = db.relationship('Command', backref='agent', lazy='dynamic', cascade='all, delete-orphan')
+    
+    def __init__(self, agent_id):
+        self.agent_id = agent_id
+        self.output = ''
+    
     def push_command(self, cmdline):
-        cmd = Command()
-        cmd.agent = self
-        cmd.cmdline = cmdline
-        cmd.timestamp = datetime.now()
+        """Add a command to the agent's queue"""
+        cmd = Command(agent_id=self.id, cmdline=cmdline)
         db.session.add(cmd)
         db.session.commit()
-
+    
     def rename(self, new_name):
-        self.display_name = new_name
+        """Rename the agent"""
+        self.hostname = new_name
         db.session.commit()
-
+    
+    @property
+    def display_name(self):
+        """Return display name for the agent"""
+        return self.hostname or self.agent_id or 'Unknown'
+    
     def is_online(self):
-        return (datetime.now() - self.last_online).seconds < 30
-
+        """Check if agent is online (last seen within 5 minutes)"""
+        if not self.last_online:
+            return False
+        from datetime import datetime, timedelta
+        return (datetime.utcnow() - self.last_online) < timedelta(minutes=5)
 
 class Command(db.Model):
     __tablename__ = 'commands'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    agent_id = db.Column(db.Integer(), db.ForeignKey('agents.id'))
-    agent = db.relationship('Agent', backref=db.backref('commands', lazy='dynamic'))
-    cmdline = db.Column(db.String(255))
-    timestamp = db.Column(db.DateTime(), default=datetime.now)
-
+    
+    id = db.Column(db.Integer, primary_key=True)
+    agent_id = db.Column(db.Integer, db.ForeignKey('agents.id'), nullable=False)
+    cmdline = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 class User(db.Model):
     __tablename__ = 'users'
