@@ -1,17 +1,37 @@
-# Import Hatalarını Düzeltme Planı
+# Loki RAT Payload Güncelleme Görevleri
 
 ## Tamamlanacak Adımlar:
 
-- [x] server/webui/__init__.py - Circular import sorununu çöz
-- [x] server/loki.py - Python path sorununu çöz  
-- [x] server/api.py - Import yolunu düzelt
-- [x] server/api/__init__.py - Syntax ve import hatalarını düzelt
-- [x] server/models.py - rename metodunu ekle
-- [x] server/config.py - UPLOAD_FOLDER ayarını ekle
-- [x] Gereksiz dosyaları temizle (pegasus-loki-rat/, server__init__.py)
-- [x] Eksik dosyaları oluştur (server/__init__.py)
-- [x] Uygulamayı test et
+### 1. Python 3 Uyumluluğu
+- [x] payload.py dosyasını Python 3 için güncelle
+- [x] StringIO import'unu düzelt (StringIO -> io.StringIO)
+- [x] print statement'larını print() fonksiyonlarına çevir
+- [x] subprocess.Popen'a text=True parametresi ekle
+- [x] Exception handling syntax'ını güncelle
+- [x] PyAudio ve diğer opsiyonel kütüphaneler için güvenli import ekle
 
-## Durum: ✅ TAMAMLANDI - Tüm import hataları çözüldü, uygulama başarıyla çalışıyor!
+### 2. Konfigürasyon Güncellemesi
+- [x] config.py dosyasını kontrol et ve gerekirse güncelle
+- [x] Server bağlantı ayarlarını doğrula
 
-Flask development server http://127.0.0.1:8080 adresinde aktif.
+### 3. Payload Çalıştırma
+- [x] Güncellenmiş payload'u test et
+- [x] Server ile bağlantıyı doğrula
+
+### 4. Builder Güncelleme (İsteğe bağlı)
+- [ ] builder.py'yi Python 3 için güncelle
+- [ ] Standalone binary oluşturma işlemini test et
+
+## Tamamlanan Değişiklikler:
+- ✅ Python 3 shebang güncellendi
+- ✅ StringIO -> io.StringIO değiştirildi
+- ✅ subprocess.Popen'a text=True eklendi
+- ✅ PyAudio, PyCrypto, PyGeocoder için güvenli import'lar eklendi
+- ✅ Record fonksiyonuna PyAudio kontrolü eklendi
+- ✅ Exception handling iyileştirildi
+
+## Notlar:
+- Server zaten çalışır durumda
+- Python 3 kullanılıyor
+- Eğitim amaçlı local ortam
+- Payload yedeklendi (payload_backup.py)
