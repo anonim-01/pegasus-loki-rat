@@ -14,17 +14,13 @@ from flask import url_for
 from flask import flash
 from flask import send_from_directory
 from flask import current_app
-
-from models import db
-from models import Agent
-from models import Command
-from models import User
+from models import db, Agent, Command, User
 
 
 def hash_and_salt(password):
     password_hash = hashlib.sha256()
     salt = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
-    password_hash.update(salt + request.form['password'])
+    password_hash.update((salt + password).encode('utf-8'))
     return password_hash.hexdigest(), salt
 
 
@@ -66,7 +62,7 @@ def login():
     if request.method == 'POST':
         if request.form['password']:
                 password_hash = hashlib.sha256()
-                password_hash.update(admin_user.salt + request.form['password'])
+                password_hash.update((admin_user.salt + request.form['password']).encode('utf-8'))
                 if admin_user.password == password_hash.hexdigest():
                     session['username'] = 'admin'
                     last_login_time =  admin_user.last_login_time
