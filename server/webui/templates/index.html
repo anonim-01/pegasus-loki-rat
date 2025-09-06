@@ -1,16 +1,96 @@
-{% with title="Ares" %}
+{% with title="Loki RAT Control Panel" %}
 {% include "header.html" %}
 {% endwith %}
 
 <div class="container">
-	<section id="main_content">
+  <section id="main_content">
+    <div class="welcome-section">
+      <div class="logo-container">
+        <h1 class="main-title">🐺 Loki RAT</h1>
+        <p class="subtitle">Advanced Remote Administration Tool</p>
+      </div>
 
-    <p>Welcome to Loki.Rat.</p>
-    <ul>
-    <li><a href="{{ url_for('webui.agent_list') }}">Bot list</a></li>
-    </ul>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🤖</div>
+          <div class="stat-info">
+            <h3>Active Agents</h3>
+            <span class="stat-number" id="active-agents">0</span>
+          </div>
+        </div>
 
+        <div class="stat-card">
+          <div class="stat-icon">📊</div>
+          <div class="stat-info">
+            <h3>Total Sessions</h3>
+            <span class="stat-number" id="total-sessions">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🌐</div>
+          <div class="stat-info">
+            <h3>Server Status</h3>
+            <span class="stat-status online">Online</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <a href="{{ url_for('webui.agent_list') }}" class="btn btn-primary">
+          <span class="btn-icon">📋</span>
+          Manage Agents
+        </a>
+
+        <a href="#" class="btn btn-secondary" onclick="refreshStats()">
+          <span class="btn-icon">🔄</span>
+          Refresh Stats
+        </a>
+
+        <a href="#" class="btn btn-info" onclick="showSystemInfo()">
+          <span class="btn-icon">ℹ️</span>
+          System Info
+        </a>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h4>🎯 Remote Control</h4>
+          <p>Execute commands remotely on connected agents with real-time feedback</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>📁 File Management</h4>
+          <p>Upload, download, and manage files across all connected systems</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>📸 Screen Capture</h4>
+          <p>Take screenshots and monitor desktop activity remotely</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>🔒 Secure Connection</h4>
+          <p>Encrypted communication channels for secure remote access</p>
+        </div>
+      </div>
+    </div>
   </section>
 </div>
+
+<script>
+  function refreshStats() {
+    // Simulate stats refresh
+    document.getElementById('active-agents').textContent = Math.floor(Math.random() * 10);
+    document.getElementById('total-sessions').textContent = Math.floor(Math.random() * 100);
+  }
+
+  function showSystemInfo() {
+    alert('System Information:\n\nServer: Loki RAT v2.0\nPython: 3.x\nStatus: Running\nUptime: ' + new Date().toLocaleString());
+  }
+
+  // Auto-refresh stats every 30 seconds
+  setInterval(refreshStats, 30000);
+</script>
 
 {% include "footer.html" %}

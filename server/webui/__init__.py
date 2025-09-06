@@ -14,7 +14,7 @@ from flask import url_for
 from flask import flash
 from flask import send_from_directory
 from flask import current_app
-from models import db, Agent, Command, User
+from server.models import db, Agent, Command, User
 
 
 def hash_and_salt(password):
@@ -105,7 +105,7 @@ def logout():
 @webui.route('/agents')
 @require_admin
 def agent_list():
-    agents = Agent.query.order_by(Agent.last_online.desc())
+    agents = Agent.query.order_by(Agent.last_online.desc()).all()
     return render_template('agent_list.html', agents=agents)
 
 

