@@ -5,7 +5,7 @@ import subprocess
 import json
 from pathlib import Path
 
-from flask import Blueprint, request, jsonify, send_file
+from flask import Blueprint, request, jsonify, send_file, abort
 
 from server.models import Agent, Command, db
 
@@ -275,3 +275,25 @@ def mass_execute():
         queued.append(aid)
 
     return jsonify({'ok': True, 'queued': queued, 'count': len(queued)})
+
+
+# Push a single command to a specific agent (used by agent_detail.html)
+@api.route('/agents/<int:agent_id>/push_command', methods=['POST'])
+def push_command(agent_id):
+    """
+    Enqueue a single command for a specific agent.
+    Accepts: form or JSON with:
+      - cmdline (or cmd): command string to enqueue
+    """
+    payload = request.form or (request.is_json and request.get_json(silent=True)) or {}
+
+    cmdline = (payload.get('cmdline') or payload.get('cmd') or '').strip()
+    if not cmdline:
+        return jsonify({'ok': False, 'error': 'cmdline is required'}), 400
+
+    agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
+
+    agent.push_command(cmdline)
+    return jsonify({'ok': True, 'queued_for': agent_id})
