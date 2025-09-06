@@ -138,6 +138,10 @@ class Agent(object):
             json={'platform': self.platform, 'hostname': self.hostname, 'username': self.username})
         return req.text
 
+    def report(self, output):
+        """ Report output to the server """
+        requests.post(config.SERVER + '/api/' + self.uid + '/report', data={'output': output})
+
     def send_output(self, output, newlines=True):
         """ Send console output to server """
         if self.silent:
