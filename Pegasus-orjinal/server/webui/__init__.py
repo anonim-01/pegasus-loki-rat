@@ -175,3 +175,9 @@ def agent_builder():
 @require_admin
 def system_monitor():
     return render_template('system_monitor.html')
+
+
+@webui.route('/tools/icarus')
+@require_admin
+def icarus_control():
+    return render_template('icarus_control.html')
