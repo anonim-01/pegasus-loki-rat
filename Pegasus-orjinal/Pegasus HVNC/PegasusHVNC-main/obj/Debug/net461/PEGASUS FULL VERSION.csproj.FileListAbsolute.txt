@@ -1,0 +1,3 @@
+C:\Users\mertk\Downloads\PEGASUS_RAT_FULL_VERSION_SOURCE\PEGASUS RAT FULL VERSION SOURCE\Pegasus HVNC\PegasusHVNC-main\obj\Debug\net461\PEGASUS FULL VERSION.csproj.AssemblyReference.cache
+C:\Users\mertk\Downloads\PEGASUS_RAT_FULL_VERSION_SOURCE\PEGASUS RAT FULL VERSION SOURCE\Pegasus HVNC\PegasusHVNC-main\obj\Debug\net461\PEGASUS FULL VERSION.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mertk\Downloads\PEGASUS_RAT_FULL_VERSION_SOURCE\PEGASUS RAT FULL VERSION SOURCE\Pegasus HVNC\PegasusHVNC-main\obj\Debug\net461\PEGASUS FULL VERSION.csproj.CoreCompileInputs.cache

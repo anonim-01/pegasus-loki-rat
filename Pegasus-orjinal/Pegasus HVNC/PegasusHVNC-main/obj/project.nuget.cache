@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "IMMRbOCa5HI=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mertk\\Downloads\\PEGASUS_RAT_FULL_VERSION_SOURCE\\PEGASUS RAT FULL VERSION SOURCE\\Pegasus HVNC\\PegasusHVNC-main\\PEGASUS FULL VERSION.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mertk\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
+    "C:\\Users\\mertk\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net461\\1.0.3\\microsoft.netframework.referenceassemblies.net461.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
