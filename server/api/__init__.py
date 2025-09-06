@@ -1,5 +1,4 @@
- dıfrom datetime import datetime, timedelta
-import os
+from datetime import datetime
 import sys
 import threading
 import subprocess
@@ -9,16 +8,17 @@ from pathlib import Path
 from flask import Blueprint, request, jsonify, send_file
 
 from server.models import Agent, Command, db
-from server.webui import require_admin
 
-esın
+api = Blueprint('api', __name__)
 
 # Paths for BTS exploit integration
-# Process state
+EXPLOIT_DIR = Path('eklentiler/expoit').resolve()
 LOG_FILE = EXPLOIT_DIR / 'logs' / 'bts_api_pentest.log'
 REPORT_FILE = EXPLOIT_DIR / 'reports' / 'summary_report.txt'
 CONFIG_FILE = EXPLOIT_DIR / 'config' / 'config.py'
 EVENT_FILE = EXPLOIT_DIR / 'logs' / 'bts_events.jsonl'
+
+# Process state
 _process_lock = threading.Lock()
 _current_proc = {'popen': None, 'start_time': None}
 
@@ -28,6 +28,7 @@ def geolocation():
     return 'Local'
 
 
+def _write_config(api_url=None, access_token=None, max_retries=None, thread_count=None, main_api_url=None):
     """Update eklentiler/expoit/config/config.py with provided values, preserving others."""
     CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -216,7 +217,10 @@ def bts_event():
 # BTS exploit log tail API
 @api.route('/bts/log', methods=['GET'])
 def bts_log():
-    lines = int(request.args.get('lines', 200))
+    try:
+        lines = int(request.args.get('lines', 200))
+    except (TypeError, ValueError):
+        lines = 200
     try:
         with open(LOG_FILE, 'r', encoding='utf-8', errors='ignore') as f:
             data = f.readlines()[-lines:]
@@ -231,3 +235,43 @@ def bts_report():
     if REPORT_FILE.exists():
         return send_file(str(REPORT_FILE), as_attachment=False)
     return jsonify({'ok': False, 'error': 'report not found'}), 404
+
+
+# Mass execute commands for multiple agents (used by web UI form action)
+@api.route('/mass_execute', methods=['POST'])
+def mass_execute():
+    """
+    Mass enqueue a command for multiple agents.
+    Accepts: form or JSON with:
+      - ids: comma-separated string "id1,id2" or list ["id1","id2"]
+      - command (or cmd): command string to enqueue
+    """
+    payload = request.form or (request.is_json and request.get_json(silent=True)) or {}
+
+    cmdline = (payload.get('command') or payload.get('cmd') or '').strip()
+    ids = payload.get('ids') or payload.get('agent_ids') or payload.get('agents')
+
+    if not cmdline:
+        return jsonify({'ok': False, 'error': 'command is required'}), 400
+
+    if isinstance(ids, str):
+        agent_ids = [s.strip() for s in ids.split(',') if s.strip()]
+    elif isinstance(ids, list):
+        agent_ids = [str(s).strip() for s in ids if str(s).strip()]
+    else:
+        agent_ids = []
+
+    if not agent_ids:
+        return jsonify({'ok': False, 'error': 'ids is required'}), 400
+
+    queued = []
+    for aid in agent_ids:
+        agent = Agent.query.filter_by(agent_id=aid).first()
+        if not agent:
+            agent = Agent(agent_id=aid)
+            db.session.add(agent)
+            db.session.commit()
+        agent.push_command(cmdline)
+        queued.append(aid)
+
+    return jsonify({'ok': True, 'queued': queued, 'count': len(queued)})
