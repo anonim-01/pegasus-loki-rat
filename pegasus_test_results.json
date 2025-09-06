@@ -1,0 +1,78 @@
+{
+  "timestamp": "2025-09-06 17:56:09",
+  "total_tests": 6,
+  "passed_tests": 6,
+  "results": {
+    "crypto": {
+      "success": true,
+      "original": "Pegasus-Loki test verisi: ğüşıöç",
+      "encrypted_length": 128,
+      "decrypted": "Pegasus-Loki test verisi: ğüşıöç"
+    },
+    "security": {
+      "success": true,
+      "mutex_test": true,
+      "debugger_present": 0,
+      "sandbox_detected": false,
+      "sandbox_indicators": [],
+      "security_status": {
+        "security_initialized": false,
+        "mutex_created": null,
+        "is_admin": 0,
+        "debugger_present": 0
+      }
+    },
+    "usb": {
+      "success": true,
+      "removable_drives": [],
+      "manager_status": {
+        "enabled": false,
+        "running": false,
+        "agent_path": null
+      }
+    },
+    "hvnc": {
+      "success": true,
+      "status": {
+        "running": false,
+        "hidden_desktop_created": null,
+        "vnc_server_running": null,
+        "platform_supported": false,
+        "pil_available": false
+      },
+      "platform_supported": false
+    },
+    "server_api": {
+      "success": true,
+      "test_endpoint": {
+        "crypto_available": true,
+        "message": "Pegasus API çalışıyor",
+        "status": "ok",
+        "timestamp": "2025-09-06T14:56:05.125724"
+      },
+      "system_info": {
+        "crypto_available": true,
+        "crypto_initialized": true,
+        "features": {
+          "encryption": true,
+          "hvnc": true,
+          "security_checks": true,
+          "usb_spread": true
+        },
+        "server_version": "2.0-pegasus",
+        "timestamp": "2025-09-06T14:56:07.204320"
+      },
+      "hello_test": true
+    },
+    "agent_integration": {
+      "success": true,
+      "agent_info": {
+        "uid": "c6f748b1-9de5-47",
+        "hostname": "ayzio",
+        "username": "mrtko",
+        "platform": "Windows 11"
+      },
+      "initialized": true
+    }
+  }
+}

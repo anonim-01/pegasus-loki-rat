@@ -70,3 +70,5 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(200))
     salt = db.Column(db.String(100))
+    last_login_time = db.Column(db.DateTime)
+    last_login_ip = db.Column(db.String(45))
