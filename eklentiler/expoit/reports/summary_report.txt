@@ -1,0 +1,14 @@
+=== BTS API Pentest Summary Report ===
+
+Total Successful Responses with Location Data: 0
+Total Warnings (Missing Location Field): 0
+Total Errors (Invalid JSON or No Response): 0
+Total Failed Requests (Non-200 Status): 0
+
+Successful BTS IDs:
+
+Warnings BTS IDs:
+
+Errors BTS IDs:
+
+Failed Requests (BTS ID and Status Code):
