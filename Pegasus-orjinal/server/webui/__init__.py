@@ -163,3 +163,15 @@ def hvnc_tool():
 @require_admin
 def pantheon_tool():
     return render_template('pantheon_tool.html')
+
+
+@webui.route('/tools/agent-builder')
+@require_admin
+def agent_builder():
+    return render_template('agent_builder.html')
+
+
+@webui.route('/tools/system-monitor')
+@require_admin
+def system_monitor():
+    return render_template('system_monitor.html')
