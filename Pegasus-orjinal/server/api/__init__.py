@@ -7,7 +7,7 @@ from pathlib import Path
 
 from flask import Blueprint, request, jsonify, send_file, abort
 
-from server.models import Agent, Command, db
+from models import Agent, Command, db
 
 api = Blueprint('api', __name__)
 

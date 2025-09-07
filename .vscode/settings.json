@@ -9,5 +9,7 @@
     "editor.experimental.preferTreeSitter.typescript": true,
     "editor.experimental.treeSitterTelemetry": true,
     "editor.experimentalGpuAcceleration": "on",
-    "editor.inertialScroll": false
+    "editor.inertialScroll": false,
+    "CodeGPT.apiKey": "Gemini CLI",
+    "Lingma.aI Chat.webToolsInAsk/AgentMode": "Auto-execute"
 }

