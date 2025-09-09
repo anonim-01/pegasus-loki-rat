@@ -108,39 +108,92 @@
     </div>
 </footer>
 
-<!-- Footer Navigation -->
-<div class="footer-nav">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Tools</h3>
-        <ul>
-          <li><a href="{{ url_for('pegasus_api.web_scanner') }}">Web Scanner</a></li>
-          <li><a href="{{ url_for('pegasus_api.exploit_tool') }}">Exploit Framework</a></li>
-          <li><a href="{{ url_for('pegasus_api.hvnc_tool') }}">HVNC Control</a></li>
-          <li><a href="{{ url_for('pegasus_api.pantheon_tool') }}">Pantheon V2</a></li>
-          <li><a href="{{ url_for('pegasus_api.icarus_control') }}">ICARUS Control</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h3>Management</h3>
-        <ul>
-          <li><a href="{{ url_for('pegasus_api.agents') }}">Agent Management</a></li>
-          <li><a href="{{ url_for('pegasus_api.create_password') }}">Settings</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h3>Resources</h3>
-        <ul>
-          <li><a href="https://github.com/" target="_blank">Documentation</a></li>
-          <li><a href="https://github.com/" target="_blank">GitHub</a></li>
-          <li><a href="https://github.com/" target="_blank">Support</a></li>
-        </ul>
-      </div>
+<!-- Back to Top Button -->
+<button class="back-to-top" id="back-to-top" onclick="scrollToTop()" title="Back to Top">
+    <span class="back-to-top-icon">↑</span>
+</button>
+
+<!-- System Information Modal -->
+<div id="system-info-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>System Information</h3>
+            <button class="modal-close" onclick="pegasus.closeModal('system-info-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="system-details">
+                <div class="detail-section">
+                    <h4>Application Details</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Name:</span>
+                            <span class="detail-value">Pegasus Loki RAT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Version:</span>
+                            <span class="detail-value">2.1.0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Build:</span>
+                            <span class="detail-value">{{ build_info or 'Development' }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Framework:</span>
+                            <span class="detail-value">Flask + SQLAlchemy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Runtime Information</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Uptime:</span>
+                            <span class="detail-value" id="modal-uptime">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Active Agents:</span>
+                            <span class="detail-value" id="modal-agent-count">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Memory Usage:</span>
+                            <span class="detail-value" id="modal-memory">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">CPU Usage:</span>
+                            <span class="detail-value" id="modal-cpu">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Security Features</h4>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <span class="feature-icon">✅</span>
+                            <span class="feature-text">AES-256 Encryption</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✅</span>
+                            <span class="feature-text">HMAC Authentication</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✅</span>
+                            <span class="feature-text">Anti-Debug Protection</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✅</span>
+                            <span class="feature-text">Process Protection</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✅</span>
+                            <span class="feature-text">Network Obfuscation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Notification Container -->
@@ -148,7 +201,7 @@
 
 <!-- JavaScript Files -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ url_for('pegasus_api.static', filename='js/pegasus-core.js') }}"></script>
+<script src="{{ url_for('webui.static', filename='js/pegasus-core.js') }}"></script>
 
 <script>
     // Footer functionality
