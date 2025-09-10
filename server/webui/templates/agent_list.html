@@ -1,4 +1,4 @@
-{% with title="Agent Management" %}
+{% with previous_page=url_for('webui.index'), title="Agent Management" %}
 {% include "header.html" %}
 {% endwith %}
 
@@ -232,7 +232,7 @@
   function changeName(agentid, name) {
     const newname = prompt("Enter new agent name:", name || "Unnamed Agent");
     if (newname && newname !== name) {
-      $.post("{{ url_for('pegasus_api.rename_agent') }}", {
+      $.post("{{ url_for('webui.rename_agent') }}", {
         'newname': newname,
         'id': agentid
       }, function () {

@@ -16,7 +16,7 @@ from pathlib import Path
 
 # Test konfigürasyonu
 TEST_CONFIG = {
-    'server_url': 'http://localhost:5000',
+    'server_url': 'http://localhost:8080',
     'test_agent_id': 'test_pegasus_agent',
     'test_duration': 30,  # saniye
     'verbose': True

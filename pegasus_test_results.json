@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-09-06 17:56:09",
+  "timestamp": "2025-09-09 03:06:07",
   "total_tests": 6,
-  "passed_tests": 6,
+  "passed_tests": 5,
   "results": {
     "crypto": {
       "success": true,
@@ -37,37 +37,19 @@
         "running": false,
         "hidden_desktop_created": null,
         "vnc_server_running": null,
-        "platform_supported": false,
-        "pil_available": false
+        "platform_supported": true,
+        "pil_available": true
       },
-      "platform_supported": false
+      "platform_supported": true
     },
     "server_api": {
-      "success": true,
-      "test_endpoint": {
-        "crypto_available": true,
-        "message": "Pegasus API çalışıyor",
-        "status": "ok",
-        "timestamp": "2025-09-06T14:56:05.125724"
-      },
-      "system_info": {
-        "crypto_available": true,
-        "crypto_initialized": true,
-        "features": {
-          "encryption": true,
-          "hvnc": true,
-          "security_checks": true,
-          "usb_spread": true
-        },
-        "server_version": "2.0-pegasus",
-        "timestamp": "2025-09-06T14:56:07.204320"
-      },
-      "hello_test": true
+      "success": false,
+      "error": "HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001887EC89090>: Failed to establish a new connection: [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı'))"
     },
     "agent_integration": {
       "success": true,
       "agent_info": {
-        "uid": "c6f748b1-9de5-47",
+        "uid": "d18eaadc-40eb-42",
         "hostname": "ayzio",
         "username": "mrtko",
         "platform": "Windows 11"

@@ -9,7 +9,7 @@ import os
 import sys
 from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate # Import Migrate
 
 # Lokal modülleri ekle
 sys.path.append(os.path.join(os.path.dirname(__file__), 'server'))
@@ -17,7 +17,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'agent'))
 
 from server.config import config
 from server.models import db
-from server.pegasus_api import pegasus_api
+from server.pegasus_api import api
+from server.webui import webui
 
 def create_app(config_name='default'):
     """Application factory"""
@@ -26,15 +27,17 @@ def create_app(config_name='default'):
     
     # Initialize extensions
     db.init_app(app)
+    migrate = Migrate(app, db) # Initialize Flask-Migrate
     
     # Register blueprints
-    app.register_blueprint(pegasus_api, url_prefix='/api')
-    # Main web UI will be handled by pegasus_api blueprint
-    
+    app.register_blueprint(api, url_prefix='/api')
+    app.register_blueprint(webui, url_prefix='/')
+    # Main web UI will be handled by webui blueprint
+
     # Add root route
     @app.route('/')
     def index():
-        return redirect(url_for('pegasus_api.login'))
+        return redirect(url_for('webui.login'))
     
     # Create upload directory if it doesn't exist
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
@@ -76,7 +79,7 @@ def main():
     # Run the application
     app.run(
         host=os.getenv('FLASK_HOST', '127.0.0.1'),
-        port=int(os.getenv('FLASK_PORT', 5000)),
+        port=int(os.getenv('FLASK_PORT', 8080)),
         debug=os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
     )
 
