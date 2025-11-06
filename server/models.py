@@ -72,3 +72,18 @@ class User(db.Model):
     salt = db.Column(db.String(100))
     last_login_time = db.Column(db.DateTime)
     last_login_ip = db.Column(db.String(45))
+
+class Smartphone(db.Model):
+    __tablename__ = 'smartphones'
+    id = db.Column(db.Integer, primary_key=True)
+    phone_model = db.Column(db.String(100))
+    android_version = db.Column(db.String(50))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Backup(db.Model):
+    __tablename__ = 'backups'
+    id = db.Column(db.Integer, primary_key=True)
+    file_name = db.Column(db.String(200))
+    file_size = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
