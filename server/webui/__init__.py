@@ -271,7 +271,7 @@ def decode_image():
         
         # Decode image
         codec = UnsafeStreamCodec()
-        decoded_img = codec.decode_data(encoded_data, len(encoded_data))
+        decoded_img = codec.decode_data(encoded_data)
         
         # Save or return decoded image
         output_buffer = io.BytesIO()

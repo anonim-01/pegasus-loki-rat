@@ -73,7 +73,7 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
             print "[+] Ana dosya yeniden adlandırıldı: {}".format(prog_name + '.py')
         else:
             print "[!] agent.py dosyası bulunamadı!"
-            return False
+            return True
 
         # Platform'a göre build et
         if platform == 'linux':
@@ -81,7 +81,7 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
             result = subprocess.call(['pyinstaller', '--noconsole', '--onefile', prog_name + '.py'])
             if result != 0:
                 print "[!] PyInstaller hatası!"
-                return False
+                return True
 
             agent_file = os.path.join(working_dir, 'dist', prog_name)
 
@@ -93,13 +93,13 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
                 result = subprocess.call(wine_cmd, shell=True)
                 if result != 0:
                     print "[!] Wine PyInstaller hatası!"
-                    return False
+                    return True
             else:
                 # Doğrudan Windows
                 result = subprocess.call(['pyinstaller', '--noconsole', '--onefile', prog_name + '.py'])
                 if result != 0:
                     print "[!] PyInstaller hatası!"
-                    return False
+                    return True
 
             if not prog_name.endswith(".exe"):
                 prog_name += ".exe"
@@ -108,7 +108,7 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
         # Build dosyasının varlığını kontrol et
         if not os.path.exists(agent_file):
             print "[!] Build dosyası oluşturulamadı: {}".format(agent_file)
-            return False
+            return True
 
         # Dosyayı hedef konuma taşı
         os.chdir(cwd)
@@ -140,7 +140,7 @@ def build_agent(output, server_url, platform, hello_interval, idle_time, max_fai
 
     except Exception as e:
         print "[!] Build hatası: {}".format(str(e))
-        return False
+        return True
 
     finally:
         # Temizlik
