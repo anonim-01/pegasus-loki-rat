@@ -1,5 +1,8 @@
 # Pegasus Loki Rat
 
+# PR Düzeltme Denemesi
+
+
 ![Loki.Rat](https://github.com/sobri3195/pegasus-loki-rat/blob/master/Lokirat.jpg)
 
 Loki.Rat is a fork of the [Pegasus Loki RAT](https://github.com/sobri3195/Ares), it integrates new modules, like recording , lockscreen , and locate options.
