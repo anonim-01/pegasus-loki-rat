@@ -8,7 +8,7 @@
   </div>
 
   <div class="login-content">
-    <div class="login-card">
+    <div class="login-card clay-card">
       <div class="login-header">
         <div class="logo-ascii">
           <pre class="ascii-art">
@@ -37,12 +37,12 @@
           </label>
           <div class="input-container">
             <input type="password" id="password" name="password" placeholder="Enter your secure password..."
-              class="form-input" required autocomplete="current-password">
+              class="form-input clay-input" required autocomplete="current-password">
             <div class="input-border"></div>
           </div>
         </div>
 
-        <button type="submit" class="login-btn" id="loginBtn">
+        <button type="submit" class="login-btn clay-button" id="loginBtn">
           <span class="btn-content">
             <span class="btn-icon">🚀</span>
             <span class="btn-text">Access System</span>
@@ -124,7 +124,7 @@
     z-index: 10;
   }
 
-  .login-card {
+  .login-card clay-card {
     background: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(20px);
     border: 2px solid var(--primary-color);
@@ -137,7 +137,7 @@
     overflow: hidden;
   }
 
-  .login-card::before {
+  .login-card clay-card::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -217,7 +217,7 @@
     position: relative;
   }
 
-  .form-input {
+  .form-input clay-input {
     width: 100%;
     padding: 1rem 1.5rem;
     background: rgba(10, 10, 10, 0.8);
@@ -231,7 +231,7 @@
     z-index: 2;
   }
 
-  .form-input:focus {
+  .form-input clay-input:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow:
@@ -240,7 +240,7 @@
     transform: translateY(-2px);
   }
 
-  .form-input::placeholder {
+  .form-input clay-input::placeholder {
     color: var(--text-secondary);
     opacity: 0.6;
   }
@@ -261,11 +261,11 @@
     z-index: 1;
   }
 
-  .form-input:focus+.input-border {
+  .form-input clay-input:focus+.input-border {
     opacity: 1;
   }
 
-  .login-btn {
+  .login-btn clay-button {
     width: 100%;
     padding: 1.2rem 2rem;
     background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
@@ -282,14 +282,14 @@
     overflow: hidden;
   }
 
-  .login-btn:hover {
+  .login-btn clay-button:hover {
     transform: translateY(-3px);
     box-shadow:
       0 10px 30px rgba(0, 255, 65, 0.4),
       0 0 50px rgba(0, 255, 65, 0.2);
   }
 
-  .login-btn:active {
+  .login-btn clay-button:active {
     transform: translateY(-1px);
   }
 
@@ -322,11 +322,11 @@
     animation: spin 1s linear infinite;
   }
 
-  .login-btn.loading .btn-content {
+  .login-btn clay-button.loading .btn-content {
     opacity: 0;
   }
 
-  .login-btn.loading .btn-loading {
+  .login-btn clay-button.loading .btn-loading {
     opacity: 1;
   }
 
@@ -361,7 +361,7 @@
       padding: 1rem;
     }
 
-    .login-card {
+    .login-card clay-card {
       padding: 2rem 1.5rem;
     }
 
@@ -380,7 +380,7 @@
   }
 
   /* Animation for form appearance */
-  .login-card {
+  .login-card clay-card {
     animation: slideInUp 0.8s ease-out;
   }
 

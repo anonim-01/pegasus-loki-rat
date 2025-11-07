@@ -4,7 +4,7 @@
 
 <div class="container">
   <!-- Welcome Section -->
-  <section class="welcome-section">
+  <section class="welcome-section clay-card">
     <div class="welcome-hero">
       <div class="hero-content">
         <div class="hero-text">
@@ -16,11 +16,11 @@
           </p>
         </div>
         <div class="hero-actions">
-          <a href="{{ url_for('webui.agent_list') }}" class="btn btn-primary btn-large">
+          <a href="{{ url_for('webui.agent_list') }}" class="btn btn-primary btn-large clay-button">
             <span class="btn-icon">🤖</span>
             Manage Agents
           </a>
-          <button onclick="pegasus.launchTool('agent-builder')" class="btn btn-secondary btn-large">
+          <button onclick="pegasus.launchTool('agent-builder')" class="btn btn-secondary btn-large clay-button">
             <span class="btn-icon">🔧</span>
             Build Agent
           </button>
@@ -65,9 +65,9 @@
   </section>
 
   <!-- Quick Stats -->
-  <section class="quick-stats">
+  <section class="quick-stats clay-card">
     <div class="stats-grid">
-      <div class="stat-card card-glass">
+      <div class="stat-card clay-card">
         <div class="stat-icon">🤖</div>
         <div class="stat-content">
           <h3>Connected Agents</h3>
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="stat-card card-glass">
+      <div class="stat-card clay-card">
         <div class="stat-icon">🛠️</div>
         <div class="stat-content">
           <h3>Available Tools</h3>
@@ -91,7 +91,7 @@
         </div>
       </div>
 
-      <div class="stat-card card-glass">
+      <div class="stat-card clay-card">
         <div class="stat-icon">🔒</div>
         <div class="stat-content">
           <h3>Security Status</h3>
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-      <div class="stat-card card-glass">
+      <div class="stat-card clay-card">
         <div class="stat-icon">⚡</div>
         <div class="stat-content">
           <h3>System Performance</h3>
@@ -125,7 +125,7 @@
     </div>
 
     <div class="tools-grid">
-      <div class="tool-card card-glass" data-tool="web-scanner">
+      <div class="tool-card clay-card" data-tool="web-scanner">
         <div class="tool-header">
           <div class="tool-icon">🔍</div>
           <div class="tool-status status-online">
@@ -148,7 +148,7 @@
         </div>
       </div>
 
-      <div class="tool-card card-glass" data-tool="exploit">
+      <div class="tool-card clay-card" data-tool="exploit">
         <div class="tool-header">
           <div class="tool-icon">💥</div>
           <div class="tool-status status-online">
@@ -170,7 +170,7 @@
         </div>
       </div>
 
-      <div class="tool-card card-glass" data-tool="hvnc">
+      <div class="tool-card clay-card" data-tool="hvnc">
         <div class="tool-header">
           <div class="tool-icon">🖥️</div>
           <div class="tool-status status-online">
@@ -192,7 +192,7 @@
         </div>
       </div>
 
-      <div class="tool-card card-glass" data-tool="pantheon">
+      <div class="tool-card clay-card" data-tool="pantheon">
         <div class="tool-header">
           <div class="tool-icon">🏛️</div>
           <div class="tool-status status-online">
@@ -214,7 +214,7 @@
         </div>
       </div>
 
-      <div class="tool-card card-glass" data-tool="icarus">
+      <div class="tool-card clay-card" data-tool="icarus">
         <div class="tool-header">
           <div class="tool-icon">🛡️</div>
           <div class="tool-status status-online">
@@ -236,7 +236,7 @@
         </div>
       </div>
 
-      <div class="tool-card card-glass" data-tool="agent-builder">
+      <div class="tool-card clay-card" data-tool="agent-builder">
         <div class="tool-header">
           <div class="tool-icon">🔧</div>
           <div class="tool-status status-online">

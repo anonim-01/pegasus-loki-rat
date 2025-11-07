@@ -9,12 +9,7 @@ import random
 import string
 import os
 
-def hash_and_salt(password):
-    """Şifre hashleme fonksiyonu"""
-    password_hash = hashlib.sha256()
-    salt = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
-    password_hash.update((salt + password).encode('utf-8'))
-    return password_hash.hexdigest(), salt
+from server.utils import hash_and_salt
 
 def change_admin_password(new_password):
     """Admin şifresini değiştirir"""

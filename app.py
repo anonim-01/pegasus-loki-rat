@@ -52,7 +52,7 @@ def init_db(app):
         
         # Create default admin user if not exists
         from server.models import User
-        from server.webui import hash_and_salt
+        from server.utils import hash_and_salt
         
         admin_user = User.query.filter_by(username='admin').first()
         if not admin_user:

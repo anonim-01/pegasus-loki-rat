@@ -1,0 +1,126 @@
+
+:root {
+    --lavender: #D6D2E4;
+    --mint-green: #D2E4D6;
+    --baby-blue: #D2E4E4;
+    --soft-white: #F5F5F5;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --highlight-color: rgba(255, 255, 255, 0.7);
+}
+
+body {
+    background-color: var(--soft-white);
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.clay-card {
+    background-color: var(--soft-white);
+    border-radius: 20px;
+    box-shadow: 
+        9px 9px 16px var(--shadow-color), 
+        -9px -9px 16px var(--highlight-color),
+        inset 4px 4px 8px rgba(255, 255, 255, 0.5),
+        inset -4px -4px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.clay-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        12px 12px 20px var(--shadow-color), 
+        -12px -12px 20px var(--highlight-color),
+        inset 4px 4px 8px rgba(255, 255, 255, 0.5),
+        inset -4px -4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.clay-button {
+    background-color: var(--lavender);
+    border: none;
+    border-radius: 16px;
+    color: #333;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    box-shadow: 
+        6px 6px 12px var(--shadow-color), 
+        -6px -6px 12px var(--highlight-color);
+    transition: all 0.2s ease-in-out;
+}
+
+.clay-button:hover {
+    background-color: var(--mint-green);
+    box-shadow: 
+        8px 8px 16px var(--shadow-color), 
+        -8px -8px 16px var(--highlight-color);
+}
+
+.clay-button:active {
+    background-color: var(--baby-blue);
+    box-shadow: 
+        inset 4px 4px 8px var(--shadow-color), 
+        inset -4px -4px 8px var(--highlight-color);
+}
+
+.clay-header {
+    background-color: var(--soft-white);
+    padding: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.clay-footer {
+    background-color: var(--soft-white);
+    padding: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 8px var(--shadow-color);
+    margin-top: 20px;
+}
+
+.clay-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.clay-table th, .clay-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--lavender);
+}
+
+.clay-table th {
+    background-color: var(--mint-green);
+    color: #333;
+}
+
+.clay-table tr:hover {
+    background-color: var(--baby-blue);
+}
+
+.clay-input {
+    background-color: var(--soft-white);
+    border: none;
+    border-radius: 16px;
+    padding: 12px 24px;
+    box-shadow: 
+        inset 4px 4px 8px var(--shadow-color), 
+        inset -4px -4px 8px var(--highlight-color);
+    width: 100%;
+    transition: all 0.2s ease-in-out;
+}
+
+.clay-input:focus {
+    outline: none;
+    box-shadow: 
+        inset 6px 6px 12px var(--shadow-color), 
+        inset -6px -6px 12px var(--highlight-color);
+}
+
+
+

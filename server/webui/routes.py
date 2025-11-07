@@ -1,7 +1,6 @@
 from flask import render_template
-from . import webui
+from . import webui, require_admin
 from ..models import Smartphone, Backup
-from .decorators import require_admin
 
 @webui.route('/smartphones')
 @require_admin

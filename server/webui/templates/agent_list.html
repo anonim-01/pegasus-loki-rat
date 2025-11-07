@@ -4,7 +4,7 @@
 
 <div class="container">
   <section id="main_content">
-    <div class="agent-management">
+    <div class="agent-management clay-card">
       <!-- Header Section -->
       <div class="page-header">
         <h2>🤖 Connected Agents</h2>
@@ -15,92 +15,92 @@
       </div>
 
       <!-- Tools Panel -->
-      <div class="tools-panel">
+      <div class="tools-panel clay-card">
         <h3>🛠️ Pegasus Tools & Extensions</h3>
         <div class="tools-grid">
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">🔍</div>
             <h4>Web Scanner</h4>
             <p>Comprehensive web vulnerability scanner</p>
-            <a href="{{ url_for('webui.web_scanner') }}" class="btn btn-tool">Launch Scanner</a>
+            <a href="{{ url_for('webui.web_scanner') }}" class="btn btn-tool clay-button">Launch Scanner</a>
           </div>
 
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">💥</div>
             <h4>Exploit Framework</h4>
             <p>BTS API penetration testing tool</p>
-            <a href="{{ url_for('webui.exploit_tool') }}" class="btn btn-tool">Launch Exploit</a>
+            <a href="{{ url_for('webui.exploit_tool') }}" class="btn btn-tool clay-button">Launch Exploit</a>
           </div>
 
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">🖥️</div>
             <h4>HVNC Control</h4>
             <p>Hidden Virtual Network Computing</p>
-            <a href="{{ url_for('webui.hvnc_tool') }}" class="btn btn-tool">Launch HVNC</a>
+            <a href="{{ url_for('webui.hvnc_tool') }}" class="btn btn-tool clay-button">Launch HVNC</a>
           </div>
 
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">🏛️</div>
             <h4>Pantheon V2</h4>
             <p>Advanced RAT control panel</p>
-            <a href="{{ url_for('webui.pantheon_tool') }}" class="btn btn-tool">Launch Pantheon</a>
+            <a href="{{ url_for('webui.pantheon_tool') }}" class="btn btn-tool clay-button">Launch Pantheon</a>
           </div>
 
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">🔧</div>
             <h4>Agent Builder</h4>
             <p>Build custom agent payloads</p>
-            <button onclick="launchAgentBuilder()" class="btn btn-tool">Build Agent</button>
+            <button onclick="launchAgentBuilder()" class="btn btn-tool clay-button">Build Agent</button>
           </div>
 
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">📊</div>
             <h4>System Monitor</h4>
             <p>Real-time system monitoring</p>
-            <button onclick="launchSystemMonitor()" class="btn btn-tool">Monitor System</button>
+            <button onclick="launchSystemMonitor()" class="btn btn-tool clay-button">Monitor System</button>
           </div>
 
-          <div class="tool-card">
+          <div class="tool-card clay-card">
             <div class="tool-icon">🛡️</div>
             <h4>ICARUS Control</h4>
             <p>Advanced security framework</p>
-            <a href="{{ url_for('webui.icarus_control') }}" class="btn btn-tool">Launch ICARUS</a>
+            <a href="{{ url_for('webui.icarus_control') }}" class="btn btn-tool clay-button">Launch ICARUS</a>
           </div>
         </div>
       </div>
 
       <!-- Control Panel -->
-      <div class="control-panel">
+      <div class="control-panel clay-card">
         <form method="post" action="{{ url_for('webui.mass_execute') }}" class="mass-action-form">
           <div class="command-section">
             <div class="input-group">
               <input type="text" name="cmd" id="cmd" placeholder="Enter command to execute on selected agents..."
-                class="command-input" />
-              <button type="submit" name="execute" class="btn btn-primary">
+                class="command-input clay-input" />
+              <button type="submit" name="execute" class="btn btn-primary clay-button">
                 <span class="btn-icon">⚡</span>
                 Execute
               </button>
             </div>
 
             <div class="action-buttons">
-              <button type="button" onclick="selectAll()" class="btn btn-secondary">
+              <button type="button" onclick="selectAll()" class="btn btn-secondary clay-button">
                 <span class="btn-icon">☑️</span>
                 Select All
               </button>
-              <button type="button" onclick="selectNone()" class="btn btn-secondary">
+              <button type="button" onclick="selectNone()" class="btn btn-secondary clay-button">
                 <span class="btn-icon">☐</span>
                 Clear Selection
               </button>
-              <button type="submit" name="delete" class="btn btn-danger"
+              <button type="submit" name="delete" class="btn btn-danger clay-button"
                 onclick="return confirm('Remove selected agents from list?')">
                 <span class="btn-icon">🗑️</span>
                 Delete Selected
               </button>
-              <button type="button" onclick="launchMassHVNC()" class="btn btn-hvnc">
+              <button type="button" onclick="launchMassHVNC()" class="btn btn-hvnc clay-button">
                 <span class="btn-icon">🖥️</span>
                 Mass HVNC
               </button>
-              <button type="button" onclick="launchMassScan()" class="btn btn-scan">
+              <button type="button" onclick="launchMassScan()" class="btn btn-scan clay-button">
                 <span class="btn-icon">🔍</span>
                 Mass Scan
               </button>
@@ -110,10 +110,10 @@
       </div>
 
       <!-- Agents Table -->
-      <div class="agents-table-container">
+      <div class="agents-table clay-table-container clay-card">
         {% if agents %}
         <div class="table-wrapper">
-          <table class="agents-table">
+          <table class="agents-table clay-table">
             <thead>
               <tr>
                 <th class="select-col">
@@ -410,12 +410,12 @@
 
   // Tool card animations
   $(document).ready(function () {
-    $('.tool-card').hover(
+    $('.tool-card clay-card').hover(
       function () {
-        $(this).addClass('tool-card-hover');
+        $(this).addClass('tool-card clay-card-hover');
       },
       function () {
-        $(this).removeClass('tool-card-hover');
+        $(this).removeClass('tool-card clay-card-hover');
       }
     );
   });
@@ -423,7 +423,7 @@
 
 <style>
   /* Tools Panel Styles - Compact Design */
-  .tools-panel {
+  .tools-panel clay-card {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     border: 1px solid #00ff41;
     border-radius: 6px;
@@ -432,7 +432,7 @@
     box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
   }
 
-  .tools-panel h3 {
+  .tools-panel clay-card h3 {
     color: #00ff41;
     margin-bottom: 10px;
     text-align: center;
@@ -447,7 +447,7 @@
     margin-top: 10px;
   }
 
-  .tool-card {
+  .tool-card clay-card {
     background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
     border: 1px solid #333;
     border-radius: 4px;
@@ -459,14 +459,14 @@
     overflow: hidden;
   }
 
-  .tool-card:hover,
-  .tool-card-hover {
+  .tool-card clay-card:hover,
+  .tool-card clay-card-hover {
     border-color: #00ff41;
     box-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
     transform: translateY(-1px);
   }
 
-  .tool-card::before {
+  .tool-card clay-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -477,7 +477,7 @@
     transition: left 0.3s;
   }
 
-  .tool-card:hover::before {
+  .tool-card clay-card:hover::before {
     left: 100%;
   }
 
@@ -487,13 +487,13 @@
     filter: drop-shadow(0 0 3px rgba(0, 255, 65, 0.3));
   }
 
-  .tool-card h4 {
+  .tool-card clay-card h4 {
     color: #00ff41;
     margin: 5px 0;
     font-size: 0.9em;
   }
 
-  .tool-card p {
+  .tool-card clay-card p {
     color: #ccc;
     font-size: 0.7em;
     margin-bottom: 8px;
@@ -502,7 +502,7 @@
     /* Hide description on small cards */
   }
 
-  .btn-tool {
+  .btn-tool clay-button {
     background: linear-gradient(45deg, #00ff41, #00cc33);
     color: #000;
     border: none;
@@ -516,7 +516,7 @@
     font-size: 0.8em;
   }
 
-  .btn-tool:hover {
+  .btn-tool clay-button:hover {
     background: linear-gradient(45deg, #00cc33, #00ff41);
     box-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
     transform: scale(1.02);
@@ -525,7 +525,7 @@
   }
 
   /* Enhanced Action Buttons */
-  .btn-hvnc {
+  .btn-hvnc clay-button {
     background: linear-gradient(45deg, #ff6b35, #f7931e);
     color: white;
     border: none;
@@ -536,13 +536,13 @@
     cursor: pointer;
   }
 
-  .btn-hvnc:hover {
+  .btn-hvnc clay-button:hover {
     background: linear-gradient(45deg, #f7931e, #ff6b35);
     box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
     transform: scale(1.05);
   }
 
-  .btn-scan {
+  .btn-scan clay-button {
     background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
     border: none;
@@ -553,14 +553,14 @@
     cursor: pointer;
   }
 
-  .btn-scan:hover {
+  .btn-scan clay-button:hover {
     background: linear-gradient(45deg, #764ba2, #667eea);
     box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
     transform: scale(1.05);
   }
 
   /* Enhanced Control Panel */
-  .control-panel {
+  .control-panel clay-card {
     background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
     border: 1px solid #00ff41;
     border-radius: 10px;
