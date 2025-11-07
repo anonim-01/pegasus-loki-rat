@@ -14,3 +14,7 @@ def backup_list():
     backups = Backup.query.all()
     return render_template('backups.html', backups=backups)
 
+@webui.route('/test')
+def test_route():
+    return 'test'
+

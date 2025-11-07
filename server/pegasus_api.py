@@ -18,7 +18,7 @@ from html import escape
 from werkzeug.utils import secure_filename
 
 from .models import db, Agent, Command, User
-from .webui import require_admin
+from .webui.decorators import require_admin
 
 # Attempt to import Pegasus modules
 try:
