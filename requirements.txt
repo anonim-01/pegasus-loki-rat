@@ -27,3 +27,4 @@ Werkzeug>=2.3.7
 pyaudio>=0.2.13
 geopy>=2.4.0
 pygeocoder>=1.2.5
+Flask-Migrate>=4.0.5
